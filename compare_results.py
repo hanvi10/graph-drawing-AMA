@@ -61,20 +61,5 @@ def main():
     print(f"(Paper: improved {len(common)-4}/{len(common)}, 4 worsened)")
     print()
 
-    # ── Per-graph breakdown ─────────────────────────────────────────────────
-    print("Per-graph results (sorted by crossing reduction):")
-    print(f"{'Graph':<45} {'Before':>7} {'After':>7} {'Δ%':>7}")
-    print("-" * 70)
-    details = pd.DataFrame({
-        "before": baseline["crossings"],
-        "after":  relaxed["crossings"],
-        "pct":    cross_pct,
-    }).sort_values("pct")
-
-    for graph, row in details.iterrows():
-        marker = " ✓" if row["pct"] < 0 else (" ✗" if row["pct"] > 0 else "")
-        print(f"{graph:<45} {int(row['before']):>7} {int(row['after']):>7} {row['pct']:>+7.1f}%{marker}")
-
-
 if __name__ == "__main__":
     main()
