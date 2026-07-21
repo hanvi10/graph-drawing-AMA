@@ -17,6 +17,9 @@ Available algorithms:
     edge_relaxation_community     (C1) community membership distance
     edge_relaxation_fiedler       (C2) Fiedler vector partition score
     edge_relaxation_adaptive      (D1) adaptive crossing re-scoring
+    community_collapse            (N1) collapse-expand community layout
+    backbone_restore              (N2) delete bridges, layout, restore
+    crossing_repair               (N3) crossing-guided node relocation
 """
 
 import argparse
@@ -37,44 +40,42 @@ GRAPHS_DIR    = os.path.join(os.path.dirname(__file__), "data", "graphs")
 RESULTS_DIR   = os.path.join(os.path.dirname(__file__), "data", "results")
 
 
+# Registry: algorithm name -> (module path, class name)
+ALGORITHM_REGISTRY = {
+    "edge_relaxation_crossing":     ("algorithms.edge_relaxation.crossing",     "EdgeRelaxationCrossing"),
+    "edge_relaxation_stress":       ("algorithms.edge_relaxation.stress",       "EdgeRelaxationStress"),
+    "edge_relaxation_angular":      ("algorithms.edge_relaxation.angular",      "EdgeRelaxationAngular"),
+    "edge_relaxation_currentflow":  ("algorithms.edge_relaxation.currentflow",  "EdgeRelaxationCurrentFlow"),
+    "edge_relaxation_embeddedness": ("algorithms.edge_relaxation.embeddedness", "EdgeRelaxationEmbeddedness"),
+    "edge_relaxation_community":    ("algorithms.edge_relaxation.community",    "EdgeRelaxationCommunity"),
+    "edge_relaxation_fiedler":      ("algorithms.edge_relaxation.fiedler",      "EdgeRelaxationFiedler"),
+    "edge_relaxation_adaptive":     ("algorithms.edge_relaxation.adaptive",     "EdgeRelaxationAdaptive"),
+    "community_collapse":           ("algorithms.novel.community_collapse",     "CommunityCollapse"),
+    "backbone_restore":             ("algorithms.novel.backbone_restore",       "BackboneRestore"),
+    "crossing_repair":              ("algorithms.novel.crossing_repair",        "CrossingRepair"),
+    "collapse_repair":              ("algorithms.novel.collapse_repair",        "CollapseRepair"),
+    "currentflow_repair":           ("algorithms.novel.currentflow_repair",     "CurrentFlowRepair"),
+    "currentflow_repair_expand":    ("algorithms.novel.currentflow_repair_expand", "CurrentFlowRepairExpand"),
+    "aesthetic_repair":             ("algorithms.novel.aesthetic_repair",       "AestheticRepair"),
+    "currentflow_aesthetic":        ("algorithms.novel.currentflow_aesthetic",  "CurrentFlowAesthetic"),
+    "cf_cross_sep":                 ("algorithms.novel.cf_cross_sep",           "CFCrossSep"),
+    "cf_cross_sep_min":             ("algorithms.novel.cf_cross_sep_min",       "CFCrossSepMin"),
+    "cf_cross_sep_prism":           ("algorithms.novel.cf_cross_sep_prism",     "CFCrossSepPrism"),
+    "cf_cross_sep_vpsc":            ("algorithms.novel.cf_cross_sep_vpsc",      "CFCrossSepVpsc"),
+    "cross_sep":                    ("algorithms.novel.cross_sep",              "CrossSep"),
+}
+
+
 def _get_algorithm(name):
-    if name == "edge_relaxation_crossing":
-        from algorithms.edge_relaxation_crossing import EdgeRelaxationCrossing
-        return EdgeRelaxationCrossing()
-    if name == "edge_relaxation_stress":
-        from algorithms.edge_relaxation_stress import EdgeRelaxationStress
-        return EdgeRelaxationStress()
-    if name == "edge_relaxation_angular":
-        from algorithms.edge_relaxation_angular import EdgeRelaxationAngular
-        return EdgeRelaxationAngular()
-    if name == "edge_relaxation_currentflow":
-        from algorithms.edge_relaxation_currentflow import EdgeRelaxationCurrentFlow
-        return EdgeRelaxationCurrentFlow()
-    if name == "edge_relaxation_embeddedness":
-        from algorithms.edge_relaxation_embeddedness import EdgeRelaxationEmbeddedness
-        return EdgeRelaxationEmbeddedness()
-    if name == "edge_relaxation_community":
-        from algorithms.edge_relaxation_community import EdgeRelaxationCommunity
-        return EdgeRelaxationCommunity()
-    if name == "edge_relaxation_fiedler":
-        from algorithms.edge_relaxation_fiedler import EdgeRelaxationFiedler
-        return EdgeRelaxationFiedler()
-    if name == "edge_relaxation_adaptive":
-        from algorithms.edge_relaxation_adaptive import EdgeRelaxationAdaptive
-        return EdgeRelaxationAdaptive()
-    raise ValueError(f"Unknown algorithm: {name}")
+    if name not in ALGORITHM_REGISTRY:
+        raise ValueError(f"Unknown algorithm: {name}")
+    module_path, class_name = ALGORITHM_REGISTRY[name]
+    import importlib
+    module = importlib.import_module(module_path)
+    return getattr(module, class_name)()
 
 
-ALGORITHM_NAMES = [
-    "edge_relaxation_crossing",
-    "edge_relaxation_stress",
-    "edge_relaxation_angular",
-    "edge_relaxation_currentflow",
-    "edge_relaxation_embeddedness",
-    "edge_relaxation_community",
-    "edge_relaxation_fiedler",
-    "edge_relaxation_adaptive",
-]
+ALGORITHM_NAMES = list(ALGORITHM_REGISTRY)
 
 
 def scale_to_unit_box(pos: dict) -> dict:
@@ -137,13 +138,15 @@ def main():
                         help="Output CSV filename (default: same as --algorithm)")
     parser.add_argument("--workers", type=int, default=1,
                         help="Parallel workers (default: 1 = sequential)")
+    parser.add_argument("--metadata", default=METADATA_PATH,
+                        help="Metadata CSV to use (default: full dataset)")
     args = parser.parse_args()
 
     run_name = args.run_name or args.algorithm
     os.makedirs(RESULTS_DIR, exist_ok=True)
     output_path = os.path.join(RESULTS_DIR, f"{run_name}.csv")
 
-    metadata = pd.read_csv(METADATA_PATH)
+    metadata = pd.read_csv(args.metadata)
     n_graphs = len(metadata)
 
     sample_alg = _get_algorithm(args.algorithm)

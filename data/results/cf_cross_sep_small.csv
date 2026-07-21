@@ -1,0 +1,11 @@
+graph,tags,nodes,edges,algorithm,crossings,mean_edge_length,edge_length_var,path_continuity,runtime_s,status
+malaria_genes/HVR_3,"[""Biological"", ""Genetic"", ""Metadata"", ""Multilayer"", ""Projection"", ""Unweighted""]",18,55,cf_cross_sep,35,0.1505886876271217,0.009106823204126327,17.906416941410434,0.77,ok
+kangaroo,"[""Animal"", ""Social"", ""Weighted""]",17,91,cf_cross_sep,375,0.33225591886352923,0.03808478713212095,50.25197479002811,0.95,ok
+plant_pol_vazquez/All sites pooled,"[""Biological"", ""Food web"", ""Multilayer"", ""Weighted""]",104,164,cf_cross_sep,133,0.15340831583567766,0.013337919736237314,62.63605858912709,4.42,ok
+urban_streets/brasilia,"[""Metadata"", ""Roads"", ""Transportation"", ""Unweighted""]",179,230,cf_cross_sep,4,0.038244816231108,0.00020366767621128728,48.6941772809011,4.84,ok
+ugandan_village/health-advice_13,"[""Multilayer"", ""Offline"", ""Social"", ""Unweighted""]",157,286,cf_cross_sep,740,0.08909564700825777,0.003481865123627181,74.4206704394655,12.94,ok
+ugandan_village/health-advice_1,"[""Multilayer"", ""Offline"", ""Social"", ""Unweighted""]",187,431,cf_cross_sep,2813,0.1378636414117414,0.010013917929618912,74.85505785154906,21.47,ok
+fullerene_structures/C240,"[""Biological"", ""Chemical"", ""Spatial"", ""Unweighted""]",240,360,cf_cross_sep,103,0.07285161675908783,0.00041065475491824287,60.978701581442714,23.16,ok
+football,"[""Social"", ""Sports"", ""Unweighted""]",115,613,cf_cross_sep,3620,0.14610055121008603,0.012596619251586985,70.03359387426164,21.15,ok
+facebook_organizations/S2,"[""Online"", ""Social"", ""Unweighted""]",165,726,cf_cross_sep,7721,0.1264294742261036,0.005737796485699947,63.857970098574775,30.06,ok
+ugandan_village/health-advice_16,"[""Multilayer"", ""Offline"", ""Social"", ""Unweighted""]",349,862,cf_cross_sep,12050,0.14189651110234705,0.009263767585433787,77.0713544725649,52.77,ok

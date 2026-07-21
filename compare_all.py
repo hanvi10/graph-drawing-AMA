@@ -34,6 +34,17 @@ ALGORITHMS = {
     "angular":      ("edge_relaxation_angular.csv",         None),
     "adaptive":     ("edge_relaxation_adaptive.csv",        None),
     "currentflow":  ("edge_relaxation_currentflow.csv",     None),
+    # Novel (non-relaxation) algorithms
+    "collapse":     ("community_collapse.csv",              None),
+    "backbone":     ("backbone_restore.csv",                None),
+    "repair":       ("crossing_repair.csv",                 None),
+    "collapse+rep": ("collapse_repair.csv",                 None),
+    "cflow+rep":    ("currentflow_repair.csv",              None),
+    "cf+rep+exp":   ("currentflow_repair_expand.csv",       None),
+    "cf+aesthetic": ("currentflow_aesthetic.csv",           None),
+    "cf+cross+sep": ("cf_cross_sep.csv",                    None),
+    "cf+sep+prism": ("cf_cross_sep_prism.csv",             None),
+    "cf+sep+vpsc":  ("cf_cross_sep_vpsc.csv",              None),
 }
 
 

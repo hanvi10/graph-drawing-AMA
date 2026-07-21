@@ -1,0 +1,76 @@
+graph,tags,nodes,edges,algorithm,crossings,mean_edge_length,edge_length_var,path_continuity,runtime_s,status
+ceo_club,"[""Affiliation"", ""Social"", ""Unweighted""]",40,95,crossing_repair,119,0.15078609603243603,0.011384423431049043,71.88985563720296,1.22,ok
+dolphins,"[""Animal"", ""Social"", ""Unweighted""]",62,159,crossing_repair,159,0.07352412196719656,0.004620945539788564,43.30728173632458,1.66,ok
+dutch_criticism,"[""Offline"", ""Social"", ""Unweighted""]",35,80,crossing_repair,144,0.1400064844459878,0.005868285956400458,51.703353032136114,1.01,ok
+blumenau_drug,"[""Biological"", ""Drug interactions"", ""Metadata"", ""Weighted""]",75,181,crossing_repair,480,0.17641801750342156,0.012226493912867316,62.23469028262662,3.56,ok
+elite,"[""Affiliation"", ""Social"", ""Unweighted""]",44,99,crossing_repair,124,0.1566634006136224,0.009414503669289299,56.31193395795057,1.7,ok
+cs_department,"[""Multilayer"", ""Relationships"", ""Social"", ""Unweighted""]",61,353,crossing_repair,2643,0.15300397801767193,0.00804028388748152,48.23654691381543,5.3,ok
+adjnoun,"[""Informational"", ""Language"", ""Unweighted""]",112,425,crossing_repair,5600,0.15465259086855218,0.008899197036346698,64.14273241745354,7.84,ok
+fullerene_structures/C180,"[""Biological"", ""Chemical"", ""Spatial"", ""Unweighted""]",180,270,crossing_repair,77,0.08760696755168777,0.0004373339367360984,61.0188807047908,3.41,ok
+celegans_interactomes/BPmaps,"[""Biological"", ""Protein interactions"", ""Unweighted""]",345,400,crossing_repair,88,0.02995922347345226,0.0012232556595789387,48.66890837751567,8.93,ok
+fullerene_structures/C240,"[""Biological"", ""Chemical"", ""Spatial"", ""Unweighted""]",240,360,crossing_repair,103,0.0770022042511395,0.0003565535485260891,61.09023347017721,6.11,ok
+football,"[""Social"", ""Sports"", ""Unweighted""]",115,613,crossing_repair,3855,0.14850764303128286,0.012754489476379234,65.93456092470697,10.38,ok
+football_tsevans,"[""Social"", ""Sports"", ""Unweighted""]",115,613,crossing_repair,3855,0.14850764303128286,0.012754489476379234,65.93456092470697,10.53,ok
+fullerene_structures/C60,"[""Biological"", ""Chemical"", ""Spatial"", ""Unweighted""]",60,90,crossing_repair,24,0.14126312741887578,0.001618281538041008,64.06327227727476,0.71,ok
+fullerene_structures/C260,"[""Biological"", ""Chemical"", ""Spatial"", ""Unweighted""]",260,390,crossing_repair,114,0.07179957009202896,0.00036932075838375995,61.02883059437307,6.32,ok
+facebook_organizations/S2,"[""Online"", ""Social"", ""Unweighted""]",165,726,crossing_repair,7164,0.08887239519609297,0.004137356378409423,51.56810837859723,14.35,ok
+kangaroo,"[""Animal"", ""Social"", ""Weighted""]",17,91,crossing_repair,296,0.3494062822800761,0.05331493771099072,20.794290106997337,0.34,ok
+karate/77,"[""Offline"", ""Social"", ""Unweighted""]",34,77,crossing_repair,52,0.11826482563125754,0.005488833175505695,37.51621081562072,0.64,ok
+interactome_pdz,"[""Biological"", ""Protein interactions"", ""Unweighted""]",161,209,crossing_repair,52,0.043317637471110795,0.003312364575090841,45.35444400541387,3.27,ok
+karate/78,"[""Offline"", ""Social"", ""Unweighted""]",34,78,crossing_repair,58,0.12234689153594833,0.005184356339671358,36.17755714458307,0.71,ok
+fullerene_structures/C320,"[""Biological"", ""Chemical"", ""Spatial"", ""Unweighted""]",320,480,crossing_repair,139,0.06791290938013052,0.0003755854867934453,60.648093387015955,8.53,ok
+macaque_neural,"[""Biological"", ""Connectome"", ""Unweighted""]",47,313,crossing_repair,2384,0.17509604807262005,0.0076770270413609515,36.89038481360731,2.15,ok
+game_thrones,"[""Fictional"", ""Social"", ""Weighted""]",107,352,crossing_repair,2230,0.09437743238913301,0.0020895630428692277,46.041873861330124,5.85,ok
+malaria_genes/HVR_3,"[""Biological"", ""Genetic"", ""Metadata"", ""Multilayer"", ""Projection"", ""Unweighted""]",18,55,crossing_repair,30,0.14304730028832852,0.012647309305695091,12.4689555014034,0.72,ok
+lesmis,"[""Fictional"", ""Social"", ""Weighted""]",77,254,crossing_repair,590,0.0773154679489144,0.004014546427160869,45.08269542147689,3.74,ok
+marvel_partnerships,"[""Fictional"", ""Social"", ""Unweighted""]",181,224,crossing_repair,6,0.02367823591300152,0.0010203847268357119,48.320390624732056,3.52,ok
+montreal,"[""Affiliation"", ""Social"", ""Unweighted""]",29,75,crossing_repair,141,0.18411701896703778,0.013246596905041375,41.80130038505857,0.65,ok
+new_guinea_tribes,"[""Offline"", ""Signed"", ""Social""]",16,58,crossing_repair,62,0.15163114000000769,0.025198197857660146,24.132996691702203,0.12,ok
+november17,"[""Metadata"", ""Offline"", ""Social"", ""Unweighted""]",22,66,crossing_repair,87,0.19515345926281832,0.013803410011149356,34.467061317924696,0.3,ok
+mist/genetic_mouse,"[""Biological"", ""Protein interactions"", ""Unweighted""]",214,252,crossing_repair,2,0.021768067143591138,0.0010840786296921646,50.42391415000353,4.38,ok
+mist/ppi_zebrafish,"[""Biological"", ""Protein interactions"", ""Unweighted""]",197,225,crossing_repair,4,0.04450129866861371,0.005093493395226432,34.15063293475195,4.97,ok
+london_transport,"[""Multilayer"", ""Public Transport"", ""Transportation"", ""Weighted""]",369,430,crossing_repair,42,0.024579922349752988,0.00016557246859479223,37.29494398839345,10.23,ok
+plant_pol_vazquez/All sites pooled,"[""Biological"", ""Food web"", ""Multilayer"", ""Weighted""]",104,164,crossing_repair,163,0.121925215453448,0.013863027616343969,58.22613587062238,2.86,ok
+fullerene_structures/C500,"[""Biological"", ""Chemical"", ""Spatial"", ""Unweighted""]",500,750,crossing_repair,223,0.05037256645148061,0.00017169586421447806,60.43199575245374,15.38,ok
+revolution,"[""Affiliation"", ""Social"", ""Unweighted""]",141,160,crossing_repair,4,0.07481020474063982,0.014806927784866744,34.943638752482286,2.41,ok
+terrorists_911,"[""Metadata"", ""Offline"", ""Social"", ""Unweighted""]",62,152,crossing_repair,162,0.10698301497728821,0.0022162483641224528,44.30218520253845,1.87,ok
+fullerene_structures/C540,"[""Biological"", ""Chemical"", ""Spatial"", ""Unweighted""]",540,810,crossing_repair,243,0.05020629072005523,0.0001718481337547983,60.43593680784954,16.48,ok
+train_terrorists,"[""Offline"", ""Social"", ""Weighted""]",64,243,crossing_repair,814,0.08990646227002412,0.004081827248717165,38.48238119825292,3.98,ok
+polbooks,"[""Informational"", ""Metadata"", ""Relatedness"", ""Unweighted""]",105,441,crossing_repair,2018,0.08145880252777753,0.002770123162280299,38.29874819275052,9.07,ok
+ugandan_village/friendship-6,"[""Multilayer"", ""Offline"", ""Social"", ""Unweighted""]",139,632,crossing_repair,13498,0.1460520353227442,0.0072860674220057145,70.96664707648684,9.68,ok
+ugandan_village/friendship-7,"[""Multilayer"", ""Offline"", ""Social"", ""Unweighted""]",121,770,crossing_repair,23476,0.19360519646395616,0.013303475406416205,77.76256830628418,9.88,ok
+ugandan_village/friendship-1,"[""Multilayer"", ""Offline"", ""Social"", ""Unweighted""]",202,547,crossing_repair,6162,0.121281484885921,0.004763944524765548,72.71756073659826,13.72,ok
+ugandan_village/friendship-2,"[""Multilayer"", ""Offline"", ""Social"", ""Unweighted""]",181,688,crossing_repair,14757,0.13687242863792,0.006519872750455627,76.02264432779182,14.16,ok
+ugandan_village/friendship-5,"[""Multilayer"", ""Offline"", ""Social"", ""Unweighted""]",184,720,crossing_repair,14289,0.1267750726710579,0.005957213341855698,74.80148281440242,15.42,ok
+ugandan_village/friendship-17,"[""Multilayer"", ""Offline"", ""Social"", ""Unweighted""]",65,257,crossing_repair,1936,0.1638894619078783,0.00846064023711168,62.24578412974158,2.12,ok
+ugandan_village/friendship-15,"[""Multilayer"", ""Offline"", ""Social"", ""Unweighted""]",120,274,crossing_repair,1189,0.12095286292640886,0.004970093453672762,65.2314593091408,5.23,ok
+ugandan_village/friendship-14,"[""Multilayer"", ""Offline"", ""Social"", ""Unweighted""]",124,525,crossing_repair,7776,0.1473295960778209,0.007960912577961516,72.97280818363951,9.1,ok
+ugandan_village/friendship-12,"[""Multilayer"", ""Offline"", ""Social"", ""Unweighted""]",229,872,crossing_repair,22233,0.11573959567223656,0.004642265356208246,71.92536162071545,17.62,ok
+ugandan_village/health-advice_2,"[""Multilayer"", ""Offline"", ""Social"", ""Unweighted""]",170,394,crossing_repair,2676,0.14099321541316434,0.007065141057261967,64.34685063230353,7.19,ok
+ugandan_village/health-advice_1,"[""Multilayer"", ""Offline"", ""Social"", ""Unweighted""]",187,431,crossing_repair,3680,0.10478239488620772,0.0037479437814625744,66.1352135733605,9.64,ok
+ugandan_village/friendship-13,"[""Multilayer"", ""Offline"", ""Social"", ""Unweighted""]",183,809,crossing_repair,22384,0.16252212834179602,0.008744333917247705,79.18662742103469,15.76,ok
+ugandan_village/health-advice_6,"[""Multilayer"", ""Offline"", ""Social"", ""Unweighted""]",131,284,crossing_repair,1527,0.14524633413316457,0.007803575786302541,61.40854790133063,4.51,ok
+ugandan_village/health-advice_5,"[""Multilayer"", ""Offline"", ""Social"", ""Unweighted""]",166,386,crossing_repair,2505,0.11535721058750466,0.004854015855990354,61.55409187445195,6.89,ok
+ugandan_village/health-advice_7,"[""Multilayer"", ""Offline"", ""Social"", ""Unweighted""]",121,473,crossing_repair,7211,0.158467123964541,0.009447434865384961,73.57695247001813,6.63,ok
+ugandan_village/health-advice_3,"[""Multilayer"", ""Offline"", ""Social"", ""Unweighted""]",185,638,crossing_repair,13643,0.14410874573906313,0.006392022235284703,68.95268654640897,12.44,ok
+ugandan_village/health-advice_13,"[""Multilayer"", ""Offline"", ""Social"", ""Unweighted""]",157,286,crossing_repair,803,0.10156363444631218,0.004627814288157968,62.16085834899558,5.53,ok
+ugandan_village/health-advice_14,"[""Multilayer"", ""Offline"", ""Social"", ""Unweighted""]",120,326,crossing_repair,2492,0.13828155582159027,0.006510173030804931,69.89995527441928,4.94,ok
+ugandan_village/health-advice_9,"[""Multilayer"", ""Offline"", ""Social"", ""Unweighted""]",173,623,crossing_repair,10671,0.13850299119564263,0.006088267276078129,65.2903533924411,11.0,ok
+ugandan_village/health-advice_17,"[""Multilayer"", ""Offline"", ""Social"", ""Unweighted""]",63,146,crossing_repair,379,0.16510064220565365,0.008208080033147833,56.42578821283974,3.0,ok
+ugandan_village/health-advice_15,"[""Multilayer"", ""Offline"", ""Social"", ""Unweighted""]",117,196,crossing_repair,245,0.12206254689137513,0.008405415635114205,57.32787626078086,5.86,ok
+ugandan_village/health-advice_12,"[""Multilayer"", ""Offline"", ""Social"", ""Unweighted""]",218,534,crossing_repair,5132,0.14298448797509902,0.00674902941030417,70.51144093015643,13.2,ok
+ugandan_village/health-advice_11,"[""Multilayer"", ""Offline"", ""Social"", ""Unweighted""]",234,527,crossing_repair,3869,0.13033331257297304,0.0068787826101896965,66.21668131641566,14.6,ok
+ugandan_village/health-advice_10,"[""Multilayer"", ""Offline"", ""Social"", ""Unweighted""]",204,820,crossing_repair,20585,0.13257230124284772,0.006773141280509138,70.98065056425146,16.67,ok
+urban_streets/brasilia,"[""Metadata"", ""Roads"", ""Transportation"", ""Unweighted""]",179,230,crossing_repair,4,0.03457069711995562,0.0005031428734707384,45.276050931367145,6.21,ok
+urban_streets/irvine2,"[""Metadata"", ""Roads"", ""Transportation"", ""Unweighted""]",178,189,crossing_repair,3,0.025364124794551836,0.0006635876469633681,42.744015174808915,6.44,ok
+urban_streets/bologna,"[""Metadata"", ""Roads"", ""Transportation"", ""Unweighted""]",541,771,crossing_repair,4,0.023763220339252777,0.00014725791954085208,47.79707793271826,13.54,ok
+urban_streets/los-angeles,"[""Metadata"", ""Roads"", ""Transportation"", ""Unweighted""]",240,339,crossing_repair,5,0.03766836578261164,0.0004398203264856196,48.33746421447919,10.29,ok
+urban_streets/new-delhi,"[""Metadata"", ""Roads"", ""Transportation"", ""Unweighted""]",252,328,crossing_repair,1,0.03009699501491311,0.000337075439178031,48.35310121847272,8.78,ok
+urban_streets/new-york,"[""Metadata"", ""Roads"", ""Transportation"", ""Unweighted""]",248,418,crossing_repair,34,0.040763862543947586,0.000424872415382538,43.41710370049559,11.16,ok
+urban_streets/walnut-creek,"[""Metadata"", ""Roads"", ""Transportation"", ""Unweighted""]",169,196,crossing_repair,3,0.035786517281311415,0.0006839235375574562,47.879113060862714,6.0,ok
+zebras,"[""Animal"", ""Metadata"", ""Social"", ""Unweighted""]",23,105,crossing_repair,574,0.1555192140593705,0.005219635119348628,28.976844941859135,0.71,ok
+windsurfers,"[""Offline"", ""Social"", ""Weighted""]",43,336,crossing_repair,3888,0.18816870828550813,0.011454482456666339,33.47198963781857,4.54,ok
+urban_streets/savannah,"[""Metadata"", ""Roads"", ""Transportation"", ""Unweighted""]",584,958,crossing_repair,0,0.028702030069767202,0.00013821517140163433,44.72847567738214,10.3,ok
+urban_streets/london,"[""Metadata"", ""Roads"", ""Transportation"", ""Unweighted""]",488,729,crossing_repair,2,0.026525884419895087,0.00014417788510096702,47.91550513346607,25.94,ok
+urban_streets/vienna,"[""Metadata"", ""Roads"", ""Transportation"", ""Unweighted""]",467,691,crossing_repair,1,0.033178822964445014,0.0002441899993734861,48.19438979589743,14.88,ok
+ugandan_village/health-advice_16,"[""Multilayer"", ""Offline"", ""Social"", ""Unweighted""]",349,862,crossing_repair,15466,0.11942400582815638,0.005708385856433677,67.1062167571626,38.64,ok

@@ -13,9 +13,11 @@ OUTPUT:
     One row per (graph, algorithm) combination with all quality metrics.
 
 HOW TO ADD A NEW ALGORITHM:
-    1. Create your algorithm in algorithms/my_algo.py
-    2. Import it below in the ALGORITHMS list
-    3. Re-run this script
+    1. Create your algorithm in algorithms/edge_relaxation/ (relaxation
+       variants) or algorithms/novel/ (everything else)
+    2. Register it in run_single.py's ALGORITHM_REGISTRY (or import it below
+       in the ALGORITHMS list)
+    3. Re-run this script (or run_single.py --algorithm <name>)
 """
 
 import argparse

@@ -1,0 +1,11 @@
+name,safe_name,tags,nodes,edges,initial_crossings
+malaria_genes/HVR_3,malaria_genes__HVR_3,"[""Biological"", ""Genetic"", ""Metadata"", ""Multilayer"", ""Projection"", ""Unweighted""]",18,55,74
+kangaroo,kangaroo,"[""Animal"", ""Social"", ""Weighted""]",17,91,478
+plant_pol_vazquez/All sites pooled,plant_pol_vazquez__All sites pooled,"[""Biological"", ""Food web"", ""Multilayer"", ""Weighted""]",104,164,249
+urban_streets/brasilia,urban_streets__brasilia,"[""Metadata"", ""Roads"", ""Transportation"", ""Unweighted""]",179,230,4
+ugandan_village/health-advice_13,ugandan_village__health-advice_13,"[""Multilayer"", ""Offline"", ""Social"", ""Unweighted""]",157,286,1074
+fullerene_structures/C240,fullerene_structures__C240,"[""Biological"", ""Chemical"", ""Spatial"", ""Unweighted""]",240,360,114
+ugandan_village/health-advice_1,ugandan_village__health-advice_1,"[""Multilayer"", ""Offline"", ""Social"", ""Unweighted""]",187,431,4416
+football,football,"[""Social"", ""Sports"", ""Unweighted""]",115,613,5494
+facebook_organizations/S2,facebook_organizations__S2,"[""Online"", ""Social"", ""Unweighted""]",165,726,8968
+ugandan_village/health-advice_16,ugandan_village__health-advice_16,"[""Multilayer"", ""Offline"", ""Social"", ""Unweighted""]",349,862,20272
