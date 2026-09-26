@@ -45,6 +45,8 @@ ALGORITHMS = {
     "cf+cross+sep": ("cf_cross_sep.csv",                    None),
     "cf+sep+prism": ("cf_cross_sep_prism.csv",             None),
     "cf+sep+vpsc":  ("cf_cross_sep_vpsc.csv",              None),
+    # algorithms2: spectral + ForceAtlas2 + minimum node separation
+    "baseline2":    ("baseline2.csv",                      None),
 }
 
 

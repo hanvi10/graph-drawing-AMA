@@ -20,6 +20,7 @@ Available algorithms:
     community_collapse            (N1) collapse-expand community layout
     backbone_restore              (N2) delete bridges, layout, restore
     crossing_repair               (N3) crossing-guided node relocation
+    baseline2                     spectral + ForceAtlas2 + min node separation
 """
 
 import argparse
@@ -63,6 +64,8 @@ ALGORITHM_REGISTRY = {
     "cf_cross_sep_prism":           ("algorithms.novel.cf_cross_sep_prism",     "CFCrossSepPrism"),
     "cf_cross_sep_vpsc":            ("algorithms.novel.cf_cross_sep_vpsc",      "CFCrossSepVpsc"),
     "cross_sep":                    ("algorithms.novel.cross_sep",              "CrossSep"),
+    # algorithms2: spectral + ForceAtlas2 + minimum node separation
+    "baseline2":                    ("algorithms2.baseline",                    "Baseline"),
 }
 
 
