@@ -4,22 +4,14 @@ run_single.py
 Run a single graph drawing algorithm on all graphs in the dataset and save results.
 
 Usage:
-    python run_single.py --algorithm edge_relaxation_crossing
-    python run_single.py --algorithm edge_relaxation_fiedler --run-name fiedler_v1
-    python run_single.py --algorithm edge_relaxation_currentflow --workers 4
+    python run_single.py --algorithm baseline
+    python run_single.py --algorithm edge_relaxation_ebc --workers 4
+    python run_single.py --algorithm edge_relaxation_currentflow --run-name currentflow_v1
 
 Available algorithms:
-    edge_relaxation_crossing      (A1) crossing participation count
-    edge_relaxation_stress        (A2) geometric stress score
-    edge_relaxation_angular       (A3) inverse angular resolution
-    edge_relaxation_currentflow   (B1) edge current flow betweenness
-    edge_relaxation_embeddedness  (B2) inverse neighborhood overlap
-    edge_relaxation_community     (C1) community membership distance
-    edge_relaxation_fiedler       (C2) Fiedler vector partition score
-    edge_relaxation_adaptive      (D1) adaptive crossing re-scoring
-    community_collapse            (N1) collapse-expand community layout
-    backbone_restore              (N2) delete bridges, layout, restore
-    crossing_repair               (N3) crossing-guided node relocation
+    baseline                      spectral + ForceAtlas2 + min node separation
+    edge_relaxation_ebc           the paper's edge relaxation, scored by edge betweenness
+    edge_relaxation_currentflow   edge relaxation scored by edge current flow betweenness
 """
 
 import argparse
@@ -28,7 +20,6 @@ import time
 from concurrent.futures import ProcessPoolExecutor, as_completed
 
 import networkx as nx
-import numpy as np
 import pandas as pd
 
 from metrics import count_crossings, mean_edge_length, edge_length_variance, path_continuity
@@ -42,27 +33,9 @@ RESULTS_DIR   = os.path.join(os.path.dirname(__file__), "data", "results")
 
 # Registry: algorithm name -> (module path, class name)
 ALGORITHM_REGISTRY = {
-    "edge_relaxation_crossing":     ("algorithms.edge_relaxation.crossing",     "EdgeRelaxationCrossing"),
-    "edge_relaxation_stress":       ("algorithms.edge_relaxation.stress",       "EdgeRelaxationStress"),
-    "edge_relaxation_angular":      ("algorithms.edge_relaxation.angular",      "EdgeRelaxationAngular"),
+    "baseline":                     ("algorithms.baseline",                     "Baseline"),
+    "edge_relaxation_ebc":          ("algorithms.edge_relaxation.ebc",          "EdgeRelaxation"),
     "edge_relaxation_currentflow":  ("algorithms.edge_relaxation.currentflow",  "EdgeRelaxationCurrentFlow"),
-    "edge_relaxation_embeddedness": ("algorithms.edge_relaxation.embeddedness", "EdgeRelaxationEmbeddedness"),
-    "edge_relaxation_community":    ("algorithms.edge_relaxation.community",    "EdgeRelaxationCommunity"),
-    "edge_relaxation_fiedler":      ("algorithms.edge_relaxation.fiedler",      "EdgeRelaxationFiedler"),
-    "edge_relaxation_adaptive":     ("algorithms.edge_relaxation.adaptive",     "EdgeRelaxationAdaptive"),
-    "community_collapse":           ("algorithms.novel.community_collapse",     "CommunityCollapse"),
-    "backbone_restore":             ("algorithms.novel.backbone_restore",       "BackboneRestore"),
-    "crossing_repair":              ("algorithms.novel.crossing_repair",        "CrossingRepair"),
-    "collapse_repair":              ("algorithms.novel.collapse_repair",        "CollapseRepair"),
-    "currentflow_repair":           ("algorithms.novel.currentflow_repair",     "CurrentFlowRepair"),
-    "currentflow_repair_expand":    ("algorithms.novel.currentflow_repair_expand", "CurrentFlowRepairExpand"),
-    "aesthetic_repair":             ("algorithms.novel.aesthetic_repair",       "AestheticRepair"),
-    "currentflow_aesthetic":        ("algorithms.novel.currentflow_aesthetic",  "CurrentFlowAesthetic"),
-    "cf_cross_sep":                 ("algorithms.novel.cf_cross_sep",           "CFCrossSep"),
-    "cf_cross_sep_min":             ("algorithms.novel.cf_cross_sep_min",       "CFCrossSepMin"),
-    "cf_cross_sep_prism":           ("algorithms.novel.cf_cross_sep_prism",     "CFCrossSepPrism"),
-    "cf_cross_sep_vpsc":            ("algorithms.novel.cf_cross_sep_vpsc",      "CFCrossSepVpsc"),
-    "cross_sep":                    ("algorithms.novel.cross_sep",              "CrossSep"),
 }
 
 
@@ -78,16 +51,6 @@ def _get_algorithm(name):
 ALGORITHM_NAMES = list(ALGORITHM_REGISTRY)
 
 
-def scale_to_unit_box(pos: dict) -> dict:
-    coords = np.array(list(pos.values()))
-    min_xy = coords.min(axis=0)
-    scale  = (coords.max(axis=0) - min_xy).max()
-    if scale == 0:
-        scale = 1.0
-    coords = (coords - min_xy) / scale
-    return dict(zip(pos.keys(), map(tuple, coords)))
-
-
 def _process_graph(args):
     graph_name, tags, graph_path, algorithm_name = args
     algorithm = _get_algorithm(algorithm_name)
@@ -100,12 +63,12 @@ def _process_graph(args):
         pos = algorithm.layout(G)
         elapsed = time.time() - t0
 
-        pos_scaled = scale_to_unit_box(pos)
+        # length metrics rescale to [-1, 1] themselves (as in the paper's code)
         metrics = {
-            "crossings":        count_crossings(G, pos_scaled),
-            "mean_edge_length": mean_edge_length(G, pos_scaled),
-            "edge_length_var":  edge_length_variance(G, pos_scaled),
-            "path_continuity":  path_continuity(G, pos_scaled),
+            "crossings":        count_crossings(G, pos),
+            "mean_edge_length": mean_edge_length(G, pos),
+            "edge_length_var":  edge_length_variance(G, pos),
+            "path_continuity":  path_continuity(G, pos),
             "runtime_s":        round(elapsed, 2),
         }
         status = "ok"

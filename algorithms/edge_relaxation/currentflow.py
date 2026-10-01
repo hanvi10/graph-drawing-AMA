@@ -1,6 +1,6 @@
 """
-algorithms/edge_relaxation_currentflow.py
-==========================================
+algorithms/edge_relaxation/currentflow.py
+=========================================
 Edge Current Flow Betweenness (ECFB).
 
 Uses an electrical resistance model instead of shortest paths. Each edge is
@@ -11,18 +11,23 @@ that EBC misses because they are not on any shortest path.
 
 Note: O(n³) computation — significantly slower than EBC for large graphs.
 Requires a connected graph (guaranteed by the dataset preprocessing).
+
+Every layout step is ForceAtlas2 (as in the Baseline), and minimum node
+separation is imposed only once, on the final layout (Baseline.finalize).
 """
 
 import networkx as nx
 import numpy as np
 
 from algorithms.base import GraphDrawingAlgorithm
+from algorithms.baseline import Baseline
 from metrics import count_crossings
 
 
 class EdgeRelaxationCurrentFlow(GraphDrawingAlgorithm):
     """
-    Edge Relaxation using Edge Current Flow Betweenness as edge score (B1).
+    Edge Relaxation using Edge Current Flow Betweenness as the edge score.
+    Same relaxation loop as EdgeRelaxation (ebc.py); only the score differs.
     """
 
     def __init__(
@@ -32,8 +37,8 @@ class EdgeRelaxationCurrentFlow(GraphDrawingAlgorithm):
         max_iter: int = 100,
         patience: int = 20,
         seed: int = 42,
-        initial_layout_iterations: int = 50,
-        loop_spring_iters: int = 50,
+        initial_layout_iterations: int = 300,
+        loop_fa2_iters: int = 50,
     ):
         self.k_r = k_r
         self.k_w = k_w
@@ -41,7 +46,7 @@ class EdgeRelaxationCurrentFlow(GraphDrawingAlgorithm):
         self.patience = patience
         self.seed = seed
         self.initial_layout_iterations = initial_layout_iterations
-        self.loop_spring_iters = loop_spring_iters
+        self.loop_fa2_iters = loop_fa2_iters
 
     @property
     def name(self) -> str:
@@ -76,8 +81,10 @@ class EdgeRelaxationCurrentFlow(GraphDrawingAlgorithm):
 
             G[selected[0]][selected[1]]['relax'] = scale[selected]
 
-            pos = nx.spring_layout(G, pos=last_pos.copy(), weight='relax',
-                                   iterations=self.loop_spring_iters)
+            # ForceAtlas2 warm-started from the last layout; 'relax' scales
+            # each edge's attraction (edges without it count as 1)
+            pos = nx.forceatlas2_layout(G, pos=last_pos.copy(), weight='relax',
+                                        max_iter=self.loop_fa2_iters)
             crossings = count_crossings(G, pos)
 
             if crossings < best_crossings:
@@ -90,4 +97,6 @@ class EdgeRelaxationCurrentFlow(GraphDrawingAlgorithm):
 
             last_pos = pos
 
-        return best_pos if best_pos is not None else pos
+        # Min separation + rescale happen once, here, after relaxation
+        final = best_pos if best_pos is not None else pos
+        return Baseline(seed=self.seed).finalize(final)

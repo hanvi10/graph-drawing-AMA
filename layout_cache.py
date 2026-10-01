@@ -3,10 +3,9 @@ layout_cache.py
 ===============
 Disk cache for expensive layout stages, keyed by graph structure.
 
-The currentflow relaxation (~30-60 s/graph) is the shared first stage of
-several pipelines; recomputing it for every pipeline variant dominates
-iteration time. This cache stores the settled positions once per
-(stage, graph) pair, so later runs and downstream pipelines reuse them.
+Relaxation layouts (EBC, currentflow) take seconds per graph, so
+scripts/make_renders.py stores each settled layout once per (stage, graph)
+pair and reuses it on later runs instead of recomputing it.
 
 The key is a hash of the graph's node count and sorted edge list, so it is
 independent of file names and stable across runs. Positions are stored as an
@@ -15,7 +14,9 @@ graphs with convert_node_labels_to_integers, giving a stable node order.
 
 NOTE: layouts are deterministic only within one numerical environment
 (numpy/scipy versions); a cache produced in this venv matches what this venv
-would recompute. Delete data/layout_cache/ after changing the environment.
+would recompute. Delete data/layout_cache/ after changing the environment,
+and delete a stage's folder (e.g. data/layout_cache/baseline_s42/) after
+changing that algorithm -- the cache cannot tell that its code changed.
 
 Usage:
     from layout_cache import cached_layout

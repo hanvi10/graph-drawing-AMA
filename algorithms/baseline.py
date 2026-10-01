@@ -58,7 +58,7 @@ class Baseline(GraphDrawingAlgorithm):
         k = sqrt(bounding-box area / n) is the average spacing per node.
         Pairs below the floor are pushed apart along the line joining them,
         each by half the shortfall, until no pair is too close. Moves are a
-        fraction of k, so the overall shape is unchanged.
+        fraction of k, so the overall shape barely changes.
 
     Step 4 — Rescale:
         ForceAtlas2 returns coordinates in arbitrary units, so the result is
@@ -86,6 +86,14 @@ class Baseline(GraphDrawingAlgorithm):
 
     def layout(self, G: nx.Graph) -> dict:
         """Compute spectral + ForceAtlas2 + separated layout. Returns {node: (x, y)}."""
+        return self.finalize(self.fa2_layout(G))
+
+    def fa2_layout(self, G: nx.Graph) -> dict:
+        """
+        Steps 1-2 only: spectral + ForceAtlas2, in ForceAtlas2's own units,
+        with no separation or rescale. Relaxation algorithms start from this
+        and call finalize() once they are done.
+        """
         try:
             pos = _dense_spectral_layout(G)
         except Exception:
@@ -97,9 +105,12 @@ class Baseline(GraphDrawingAlgorithm):
         rng = np.random.default_rng(self.seed)
         pos = {v: np.asarray(xy) + rng.uniform(-JITTER, JITTER, 2)
                for v, xy in pos.items()}
-        pos = nx.forceatlas2_layout(G, pos=pos, max_iter=self.iterations,
-                                    weight=None, seed=self.seed)
-        pos = self._separate(pos, rng)
+        return nx.forceatlas2_layout(G, pos=pos, max_iter=self.iterations,
+                                     weight=None, seed=self.seed)
+
+    def finalize(self, pos: dict) -> dict:
+        """Steps 3-4: minimum separation, then rescale to [-1, 1]."""
+        pos = self._separate(pos, np.random.default_rng(self.seed))
         return nx.rescale_layout_dict(pos, scale=1)
 
     def _separate(self, pos: dict, rng) -> dict:

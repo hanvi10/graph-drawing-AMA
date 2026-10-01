@@ -51,10 +51,13 @@ class GraphDrawingAlgorithm(ABC):
         pass
 
     def _initial_layout(self, G: nx.Graph, seed: int, iterations: int) -> dict:
-        """Spectral → spring layout used as the starting point by most algorithms."""
-        try:
-            pos = nx.spectral_layout(G, weight=None)
-        except Exception:
-            pos = nx.random_layout(G, seed=seed)
-        return nx.spring_layout(G, pos=pos, weight=None, seed=seed,
-                                iterations=iterations)
+        """
+        The Baseline's spectral → ForceAtlas2 layout, used as the starting
+        point by the edge relaxation algorithms (EBC, currentflow). It is in
+        ForceAtlas2's own units with no min separation; callers finish with
+        Baseline.finalize(), so separation is imposed once, at the end.
+        `iterations` is the number of ForceAtlas2 iterations (Baseline's
+        default is 300).
+        """
+        from algorithms.baseline import Baseline   # deferred: baseline imports base
+        return Baseline(seed=seed, iterations=iterations).fa2_layout(G)

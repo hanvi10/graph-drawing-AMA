@@ -11,6 +11,17 @@ The three metrics used in the paper are:
     - Edge crossings      (lower is better)
     - Mean edge length    (lower is better)
     - Path continuity     (lower is better — means straighter paths)
+plus one extra:
+    - Edge length variance (lower is better — more uniform edge lengths)
+
+The definitions follow the paper authors' code (src/graph_utils.py in
+github.com/raulhigueras/graph-drawing-edge-relaxation), which reproduces the
+paper's reported numbers (checked on urban_streets/new-york, Fig. 2a):
+    - Length metrics first rescale the drawing with nx.rescale_layout_dict
+      (centred, largest |coordinate| = 1). The paper's text says "scaled to a
+      1×1 box", but its numbers only match this [-1, 1] rescale. Doing it
+      inside the metric makes the result independent of the input scale.
+    - Path continuity uses shortest paths of 3–5 NODES (2–4 edges).
 """
 
 import math
@@ -25,7 +36,7 @@ import numpy as np
 # ============================================================================
 
 def _same_side(pos, p, q, a, b) -> bool:
-    """Return True if points a and b are on the same side of segment p→q."""
+    """Return True if points a and b are on the same side of the line through p and q."""
     dx = pos[p][0] - pos[q][0]
     dy = pos[p][1] - pos[q][1]
     dxa = pos[a][0] - pos[p][0]
@@ -71,7 +82,8 @@ def _all_edge_lengths(G: nx.Graph, pos: dict) -> list[float]:
 
 
 def _edge_length_stats(G: nx.Graph, pos: dict) -> tuple[float, float]:
-    """Return (mean, variance) of edge lengths in a single pass."""
+    """Return (mean, variance) of edge lengths after rescaling to [-1, 1]."""
+    pos = nx.rescale_layout_dict(pos)
     lengths = _all_edge_lengths(G, pos)
     if not lengths:
         return 0.0, 0.0
@@ -80,13 +92,13 @@ def _edge_length_stats(G: nx.Graph, pos: dict) -> tuple[float, float]:
 
 
 def mean_edge_length(G: nx.Graph, pos: dict) -> float:
-    """Average edge length across all edges."""
+    """Average edge length, measured on the drawing rescaled to [-1, 1]."""
     mean, _ = _edge_length_stats(G, pos)
     return mean
 
 
 def edge_length_variance(G: nx.Graph, pos: dict) -> float:
-    """Variance of edge lengths (measures how uniform lengths are)."""
+    """Variance of edge lengths on the [-1, 1]-rescaled drawing (how uniform they are)."""
     _, var = _edge_length_stats(G, pos)
     return var
 
@@ -95,8 +107,10 @@ def edge_length_variance(G: nx.Graph, pos: dict) -> float:
 # PATH CONTINUITY
 # ============================================================================
 # Measures how "straight" paths look in the drawing.
-# For each shortest path of 3–5 edges, compute the mean turning angle at
-# intermediate nodes (0° = straight, 90° = right-angle turn).
+# For every node pair whose shortest path has 3–5 nodes (2–4 edges), take
+# one shortest path between them and compute the mean turning angle at its
+# intermediate nodes (0° = straight, 90° = right-angle turn, 180° = doubling
+# back).
 # Lower is better.
 
 def _angle_between_segments(p1, p2, p3) -> float:
@@ -115,38 +129,31 @@ def _angle_between_segments(p1, p2, p3) -> float:
 
 
 def path_continuity(G: nx.Graph, pos: dict,
-                    min_hops: int = 3, max_hops: int = 5) -> float:
+                    min_nodes: int = 3, max_nodes: int = 5) -> float:
     """
-    Mean path continuity across all shortest paths of length min_hops–max_hops.
+    Mean path continuity over shortest paths with min_nodes–max_nodes nodes.
 
-    For each qualifying path, compute the mean turning angle at its intermediate
-    nodes, then average those per-path means across all paths.
+    Same as the paper's code (graph_utils.continuity): for each ordered pair
+    (u, v) (so each pair counts twice), take the shortest path that
+    nx.all_pairs_shortest_path returns, keep it if it has 3–5 nodes, compute
+    the mean turning angle at its intermediate nodes, then average those
+    per-path means. Angles are scale-independent, so no rescale is needed.
     Lower = straighter paths = better.
     """
-    pos = nx.drawing.layout.rescale_layout_dict(pos)
+    total, count = 0.0, 0
+    # cutoff counts edges; paths it finds are the same as without a cutoff
+    for u, paths in nx.all_pairs_shortest_path(G, cutoff=max_nodes - 1):
+        for v, path in paths.items():
+            if not (min_nodes <= len(path) <= max_nodes):
+                continue
+            angles = [
+                _angle_between_segments(pos[path[k-1]], pos[path[k]], pos[path[k+1]])
+                for k in range(1, len(path) - 1)
+            ]
+            total += float(np.mean(angles))
+            count += 1
 
-    # Use length-only BFS first (cheap) to find qualifying pairs,
-    # then fetch actual paths only for those pairs.
-    qualifying = [
-        (u, v)
-        for u, lengths in nx.all_pairs_shortest_path_length(G, cutoff=max_hops)
-        for v, dist in lengths.items()
-        if min_hops <= dist <= max_hops
-    ]
-
-    if not qualifying:
-        return 0.0
-
-    total = 0.0
-    for u, v in qualifying:
-        path = nx.shortest_path(G, u, v)
-        angles = [
-            _angle_between_segments(pos[path[k-1]], pos[path[k]], pos[path[k+1]])
-            for k in range(1, len(path) - 1)
-        ]
-        total += float(np.mean(angles)) if angles else 0.0
-
-    return total / len(qualifying)
+    return total / count if count else 0.0
 
 
 # ============================================================================
@@ -154,7 +161,7 @@ def path_continuity(G: nx.Graph, pos: dict,
 # ============================================================================
 
 def all_metrics(G: nx.Graph, pos: dict) -> dict:
-    """Return a dict with all quality metrics used in the paper."""
+    """Return a dict with all four quality metrics."""
     mean_len, len_var = _edge_length_stats(G, pos)
     return {
         "crossings":          count_crossings(G, pos),

@@ -13,8 +13,8 @@ OUTPUT:
     One row per (graph, algorithm) combination with all quality metrics.
 
 HOW TO ADD A NEW ALGORITHM:
-    1. Create your algorithm in algorithms/edge_relaxation/ (relaxation
-       variants) or algorithms/novel/ (everything else)
+    1. Create your algorithm in algorithms/ (relaxation variants go in
+       algorithms/edge_relaxation/)
     2. Register it in run_single.py's ALGORITHM_REGISTRY (or import it below
        in the ALGORITHMS list)
     3. Re-run this script (or run_single.py --algorithm <name>)
@@ -27,7 +27,6 @@ import time
 from concurrent.futures import ProcessPoolExecutor, as_completed
 
 import networkx as nx
-import numpy as np
 import pandas as pd
 
 from metrics import count_crossings, mean_edge_length, edge_length_variance, path_continuity
@@ -59,30 +58,19 @@ RESULTS_DIR    = os.path.join(os.path.dirname(__file__), "data", "results")
 # HELPERS
 # ============================================================================
 
-def scale_to_unit_box(pos: dict) -> dict:
-    """Scale positions so the drawing fits in a 1×1 bounding box."""
-    coords = np.array(list(pos.values()))
-    min_xy = coords.min(axis=0)
-    scale  = (coords.max(axis=0) - min_xy).max()
-    if scale == 0:
-        scale = 1.0   # all nodes coincide; avoid division by zero
-    coords = (coords - min_xy) / scale
-    return dict(zip(pos.keys(), map(tuple, coords)))
-
-
 def run_on_graph(G: nx.Graph, algorithm) -> dict:
     """Run one algorithm on one graph and return all metrics."""
     t0 = time.time()
     pos = algorithm.layout(G)
     elapsed = time.time() - t0
 
-    pos_scaled = scale_to_unit_box(pos)  # scale for fair edge length comparison
-
+    # Length metrics rescale the drawing to [-1, 1] themselves (as in the
+    # paper's code), so every algorithm is measured at the same scale.
     return {
-        "crossings":         count_crossings(G, pos_scaled),
-        "mean_edge_length":  mean_edge_length(G, pos_scaled),
-        "edge_length_var":   edge_length_variance(G, pos_scaled),
-        "path_continuity":   path_continuity(G, pos_scaled),
+        "crossings":         count_crossings(G, pos),
+        "mean_edge_length":  mean_edge_length(G, pos),
+        "edge_length_var":   edge_length_variance(G, pos),
+        "path_continuity":   path_continuity(G, pos),
         "runtime_s":         round(elapsed, 2),
     }
 
