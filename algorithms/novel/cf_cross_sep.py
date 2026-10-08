@@ -209,11 +209,16 @@ class CFCrossSep(GraphDrawingAlgorithm):
     def name(self) -> str:
         return "cf_cross_sep"
 
-    def layout(self, G: nx.Graph) -> dict:
-        pos = cached_layout(
+    def _start_layout(self, G: nx.Graph) -> dict:
+        """Stage 1: the layout the repair starts from — the currentflow
+        relaxation (disk-cached). CrossSep overrides only this."""
+        return cached_layout(
             f"currentflow_s{self.seed}", G,
             lambda: EdgeRelaxationCurrentFlow(seed=self.seed).layout(G))
-        pos = self._repair.repair(G, pos)          # verified vs cf layout
+
+    def layout(self, G: nx.Graph) -> dict:
+        pos = self._start_layout(G)
+        pos = self._repair.repair(G, pos)          # verified vs start layout
         pos = self._polish.anneal_expand(G, pos)   # books the continuity cost
         pos = self._polish.repair(G, pos)          # verified vs post-expand
         # guaranteed node-node floor + [-1, 1] rescale, as for every algorithm

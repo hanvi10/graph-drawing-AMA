@@ -13,6 +13,7 @@ Available algorithms:
     edge_relaxation_ebc           the paper's edge relaxation, scored by edge betweenness
     edge_relaxation_currentflow   edge relaxation scored by edge current flow betweenness
     cf_cross_sep                  currentflow + greedy crossing repair + annealed separation
+    cross_sep                     the same without relaxation: baseline + repair + separation
 """
 
 import argparse
@@ -38,6 +39,7 @@ ALGORITHM_REGISTRY = {
     "edge_relaxation_ebc":          ("algorithms.edge_relaxation.ebc",          "EdgeRelaxation"),
     "edge_relaxation_currentflow":  ("algorithms.edge_relaxation.currentflow",  "EdgeRelaxationCurrentFlow"),
     "cf_cross_sep":                 ("algorithms.novel.cf_cross_sep",           "CFCrossSep"),
+    "cross_sep":                    ("algorithms.novel.cross_sep",              "CrossSep"),
 }
 
 

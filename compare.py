@@ -34,6 +34,7 @@ INPUT (from run_single.py):
     data/results/edge_relaxation_ebc.csv
     data/results/edge_relaxation_currentflow.csv
     data/results/cf_cross_sep.csv
+    data/results/cross_sep.csv
 
 OUTPUT:
     data/results/comparison_summary.csv    -- one row per (algorithm, metric)
@@ -55,6 +56,7 @@ ALGORITHMS = {                      # display name -> results CSV (without .csv)
     "EBC":         "edge_relaxation_ebc",
     "currentflow": "edge_relaxation_currentflow",
     "cf_cross_sep": "cf_cross_sep",
+    "cross_sep":    "cross_sep",
 }
 METRICS = ["crossings", "mean_edge_length", "edge_length_var", "path_continuity"]
 

@@ -9,6 +9,7 @@ algorithm in its own folder:
     data/figures/renders/ebc/<safe_name>.png
     data/figures/renders/currentflow/<safe_name>.png
     data/figures/renders/cf_cross_sep/<safe_name>.png
+    data/figures/renders/cross_sep/<safe_name>.png     (ablation: no relaxation)
 
 plus one side-by-side image per graph comparing the baseline with the three
 algorithms built on it (crossings in each panel title):
@@ -17,7 +18,7 @@ algorithms built on it (crossings in each panel title):
 
 Style: blue nodes, thin gray edges, title = graph name + crossings.
 Images that already exist are skipped -- delete a folder to redraw it.
-Baseline / EBC / currentflow / cf_cross_sep layouts go through layout_cache,
+Baseline / EBC / currentflow / cf_cross_sep / cross_sep layouts go through layout_cache,
 so layouts computed on an earlier run are reused (and the single renders and
 comparison panels always show the same layout).
 
@@ -45,6 +46,7 @@ from algorithms.baseline import Baseline
 from algorithms.edge_relaxation.ebc import EdgeRelaxation
 from algorithms.edge_relaxation.currentflow import EdgeRelaxationCurrentFlow
 from algorithms.novel.cf_cross_sep import CFCrossSep
+from algorithms.novel.cross_sep import CrossSep
 
 MAX_EDGES = 400
 SEED = 42
@@ -56,7 +58,7 @@ NODE_COLOR = "#2f5f9e"
 EDGE_COLOR = "#9aa5b1"
 INK        = "#333333"
 
-ALGOS = ["random", "baseline", "ebc", "currentflow", "cf_cross_sep"]
+ALGOS = ["random", "baseline", "ebc", "currentflow", "cf_cross_sep", "cross_sep"]
 COMPARISON = [("baseline", "Baseline"), ("ebc", "EBC"), ("currentflow", "currentflow"),
               ("cf_cross_sep", "cf_cross_sep")]
 
@@ -77,6 +79,9 @@ def layout_for(algo, G):
     if algo == "cf_cross_sep":
         return cached_layout(f"cf_cross_sep_s{SEED}", G,
                              lambda: CFCrossSep(seed=SEED).layout(G))
+    if algo == "cross_sep":
+        return cached_layout(f"cross_sep_s{SEED}", G,
+                             lambda: CrossSep(seed=SEED).layout(G))
     raise ValueError(algo)
 
 
