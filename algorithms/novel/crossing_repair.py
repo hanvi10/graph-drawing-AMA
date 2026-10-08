@@ -144,6 +144,12 @@ class CrossingRepair(GraphDrawingAlgorithm):
             return 0.0
         return float(np.concatenate(parts).mean())
 
+    def _extra_gate(self, coords, i, cur, cand, u_other, other_E) -> bool:
+        """Extra acceptance test for moving node i from `cur` to `cand`, checked
+        in the relocation and smoothing passes. Accepts everything here;
+        subclasses add constraints (cf_cross_sep: node-edge clearance)."""
+        return True
+
     # ── main ─────────────────────────────────────────────────────────────────
 
     def layout(self, G: nx.Graph) -> dict:
@@ -274,6 +280,8 @@ class CrossingRepair(GraphDrawingAlgorithm):
                     if (self._angle_penalty(coords, cand, u_other, nb_u, nb_w)
                             > pen_cur + slack):
                         continue
+                    if not self._extra_gate(coords, i, cur, cand, u_other, other_E):
+                        continue
                     len_new = np.linalg.norm(coords[u_other] - cand, axis=1).sum()
                     if c_new < best_c or len_new < best_len - 1e-12:
                         best_c, best_len, best_cand = c_new, len_new, cand
@@ -311,6 +319,7 @@ class CrossingRepair(GraphDrawingAlgorithm):
                 if (self._node_incident_crossings(coords, cand, u_other,
                                                   other_E, mask) <= c_cur
                         and self._angle_penalty(coords, cand, u_other, nb_u, nb_w)
-                            <= pen_cur + slack):
+                            <= pen_cur + slack
+                        and self._extra_gate(coords, i, cur, cand, u_other, other_E)):
                     coords[i] = cand
                     break

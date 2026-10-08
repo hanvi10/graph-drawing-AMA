@@ -7,7 +7,7 @@ crossing_repair optimizes the paper's metrics and exploits their blind spot:
 nothing penalizes packing nodes together, so it clumps. Un-clumping
 afterwards pays the packed gains back; this algorithm never lets the packing
 happen. (In cf_cross_sep it is used as the base class of the separation
-polish, which reuses its gated relocate/smooth passes.)
+polish, which reuses its gated relocate/smooth passes with G4 disabled.)
 
 Move gates (checked for EVERY candidate move, in every pass):
   G1 crossings     — relocation must strictly reduce the node's incident
@@ -67,6 +67,26 @@ def _segs_to_pts(A, B, P):
     t = np.clip((AP * AB).sum(axis=2) / denom, 0.0, 1.0)   # (d,n)
     proj = A[:, None, :] + t[:, :, None] * AB
     return np.linalg.norm(P[None, :, :] - proj, axis=2)
+
+
+def _clearance_penalty(coords, i, cand, u_other, other_E, thresh):
+    """How deeply node i, placed at `cand`, intrudes on foreign edges and
+    nodes: sum of (thresh - d) over the node-edge pairs closer than thresh —
+    node i vs edges not incident to it, plus i's incident edges vs nodes that
+    are not their endpoints. 0 when everything is at least thresh away.
+    Depth-based, so a move cannot trade a shallow overlap for a deep one."""
+    pen = 0.0
+    if len(other_E):
+        d = _pt_to_segs(cand, coords[other_E[:, 0]], coords[other_E[:, 1]])
+        pen += float(np.maximum(0.0, thresh - d).sum())
+    if len(u_other):
+        A = np.repeat(cand[None, :], len(u_other), axis=0)
+        D = _segs_to_pts(A, coords[u_other], coords)      # (d, n)
+        D[:, i] = np.inf
+        for j, u in enumerate(u_other):                    # own endpoints don't count
+            D[j, u] = np.inf
+        pen += float(np.maximum(0.0, thresh - D).sum())
+    return pen
 
 
 class AestheticRepair(CrossingRepair):
