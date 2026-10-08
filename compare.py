@@ -33,6 +33,7 @@ INPUT (from run_single.py):
     data/results/baseline.csv
     data/results/edge_relaxation_ebc.csv
     data/results/edge_relaxation_currentflow.csv
+    data/results/cf_cross_sep.csv
 
 OUTPUT:
     data/results/comparison_summary.csv    -- one row per (algorithm, metric)
@@ -53,6 +54,7 @@ BASELINE = "baseline"
 ALGORITHMS = {                      # display name -> results CSV (without .csv)
     "EBC":         "edge_relaxation_ebc",
     "currentflow": "edge_relaxation_currentflow",
+    "cf_cross_sep": "cf_cross_sep",
 }
 METRICS = ["crossings", "mean_edge_length", "edge_length_var", "path_continuity"]
 
@@ -135,7 +137,8 @@ def main():
 
     def show(title, column, paper=False):
         print(f"\n{title}\n")
-        table = summary.pivot(index="algorithm", columns="metric", values=column)[METRICS]
+        table = summary.pivot(index="algorithm", columns="metric", values=column)
+        table = table.loc[list(ALGORITHMS), METRICS]   # keep ALGORITHMS order
         if paper:
             table.loc["paper (EBC, spring)"] = [PAPER[m] for m in METRICS]
         print(table.to_string(float_format=lambda v: f"{v:+.1f}%"))

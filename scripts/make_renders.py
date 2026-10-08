@@ -8,16 +8,18 @@ algorithm in its own folder:
     data/figures/renders/baseline/<safe_name>.png
     data/figures/renders/ebc/<safe_name>.png
     data/figures/renders/currentflow/<safe_name>.png
+    data/figures/renders/cf_cross_sep/<safe_name>.png
 
-plus one side-by-side image per graph comparing the baseline with both
-relaxation algorithms (crossings in each panel title):
+plus one side-by-side image per graph comparing the baseline with the three
+algorithms built on it (crossings in each panel title):
 
     data/figures/renders/comparison/<safe_name>.png
 
 Style: blue nodes, thin gray edges, title = graph name + crossings.
 Images that already exist are skipped -- delete a folder to redraw it.
-Baseline / EBC / currentflow layouts go through layout_cache, so layouts
-computed on an earlier run are reused.
+Baseline / EBC / currentflow / cf_cross_sep layouts go through layout_cache,
+so layouts computed on an earlier run are reused (and the single renders and
+comparison panels always show the same layout).
 
 HOW TO RUN:
     ./.venv-fa2/bin/python scripts/make_renders.py --workers 6      (from the project root)
@@ -42,6 +44,7 @@ from layout_cache import cached_layout
 from algorithms.baseline import Baseline
 from algorithms.edge_relaxation.ebc import EdgeRelaxation
 from algorithms.edge_relaxation.currentflow import EdgeRelaxationCurrentFlow
+from algorithms.novel.cf_cross_sep import CFCrossSep
 
 MAX_EDGES = 400
 SEED = 42
@@ -53,8 +56,9 @@ NODE_COLOR = "#2f5f9e"
 EDGE_COLOR = "#9aa5b1"
 INK        = "#333333"
 
-ALGOS = ["random", "baseline", "ebc", "currentflow"]
-COMPARISON = [("baseline", "Baseline"), ("ebc", "EBC"), ("currentflow", "currentflow")]
+ALGOS = ["random", "baseline", "ebc", "currentflow", "cf_cross_sep"]
+COMPARISON = [("baseline", "Baseline"), ("ebc", "EBC"), ("currentflow", "currentflow"),
+              ("cf_cross_sep", "cf_cross_sep")]
 
 
 def layout_for(algo, G):
@@ -70,6 +74,9 @@ def layout_for(algo, G):
         return cached_layout(
             f"currentflow_s{SEED}", G,
             lambda: EdgeRelaxationCurrentFlow(seed=SEED).layout(G))
+    if algo == "cf_cross_sep":
+        return cached_layout(f"cf_cross_sep_s{SEED}", G,
+                             lambda: CFCrossSep(seed=SEED).layout(G))
     raise ValueError(algo)
 
 

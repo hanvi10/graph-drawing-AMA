@@ -7,3 +7,7 @@ currentflow,crossings,75,-4.2,-4.94,-8.27,63,9,3,-16.8,,6.229,-0.4299,-0.1481
 currentflow,mean_edge_length,75,-26.85,-31.05,-29.4,72,3,0,-13.1,,,,
 currentflow,edge_length_var,75,47.56,8.04,5.53,33,42,0,51.0,,,,
 currentflow,path_continuity,75,2.62,0.5,2.41,27,46,2,0.1,,,,
+cf_cross_sep,crossings,75,-30.24,-26.46,-32.19,73,0,2,-16.8,,6.229,-1.1245,-0.6364
+cf_cross_sep,mean_edge_length,75,-13.02,-14.49,-14.7,61,14,0,-13.1,,,,
+cf_cross_sep,edge_length_var,75,54.35,37.12,34.23,30,45,0,51.0,,,,
+cf_cross_sep,path_continuity,75,9.37,6.06,8.54,5,70,0,0.1,,,,
